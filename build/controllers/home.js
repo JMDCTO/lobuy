@@ -1,16 +1,4 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
+import { testEnvironmentVariable } from '../settings';
+export const indexPage = (req, res) => res.status(200).json({
+  message: testEnvironmentVariable
 });
-exports.indexPage = void 0;
-
-var _settings = require("../settings");
-
-var indexPage = function indexPage(req, res) {
-  return res.status(200).json({
-    message: _settings.testEnvironmentVariable
-  });
-};
-
-exports.indexPage = indexPage;

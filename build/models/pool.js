@@ -1,21 +1,31 @@
-"use strict";
+import { Pool } from 'pg';
+import dotenv from 'dotenv';
+import { connectionString } from '../settings';
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+class Pooling {
+  constructor() {
+    dotenv.config();
+    this.pool = new Pool({
+      connectionString
+    });
+  }
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.pool = void 0;
+  getPool() {
+    return this.pool;
+  }
 
-var _pg = require("pg");
+  closePool() {
+    if (this.tag == 'accountpool') {
+      this.pool = null;
+      return "Killed " + this.tag + " for " + this.origin;
+    }
 
-var _dotenv = _interopRequireDefault(require("dotenv"));
+    if (this.tag == 'businesspool') {
+      this.pool = null;
+      return "Killed " + this.tag + " for " + this.origin;
+    }
+  }
 
-var _settings = require("../settings");
+}
 
-_dotenv["default"].config();
-
-var pool = new _pg.Pool({
-  connectionString: _settings.connectionString
-});
-exports.pool = pool;
+export const pool = new Pooling();

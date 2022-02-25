@@ -1,22 +1,15 @@
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
-var _debug = _interopRequireDefault(require("debug"));
-
-var _http = _interopRequireDefault(require("http"));
-
-var _app = _interopRequireDefault(require("../app"));
-
 /**
  * Module dependencies.
  */
-
+import debug from 'debug';
+import http from 'http';
+import app from '../app';
 /**
  * Normalize a port into a number, string, or false.
  */
-var normalizePort = function normalizePort(val) {
-  var port = parseInt(val, 10);
+
+const normalizePort = val => {
+  const port = parseInt(val, 10);
 
   if (Number.isNaN(port)) {
     // named pipe
@@ -35,35 +28,47 @@ var normalizePort = function normalizePort(val) {
  */
 
 
-var port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+app.use((req, res, next) => {
+  const allowedOrigins = ['http://127.0.0.1:8888', 'http://localhost:8888', "http://127.0.0.1:58158"];
+  const origin = req.headers.origin;
 
-_app["default"].set('port', port);
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  } //res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:8020');
+
+
+  res.header('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, application/json');
+  res.header('Access-Control-Allow-Credentials', true);
+  return next();
+});
 /**
  * Create HTTP server.
  */
 
-
-var server = _http["default"].createServer(_app["default"]);
+const server = http.createServer(app);
 /**
  * Event listener for HTTP server "error" event.
  */
 
-
-var onError = function onError(error) {
+const onError = error => {
   if (error.syscall !== 'listen') {
+    console.log(error);
     throw error;
   }
 
-  var bind = typeof port === 'string' ? "Pipe ".concat(port) : "Port ".concat(port); // handle specific listen errors with friendly messages
+  const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`; // handle specific listen errors with friendly messages
 
   switch (error.code) {
     case 'EACCES':
-      alert("".concat(bind, " requires elevated privileges"));
+      alert(`${bind} requires elevated privileges`);
       process.exit(1);
       break;
 
     case 'EADDRINUSE':
-      alert("".concat(bind, " is already in use"));
+      alert(`${bind} is already in use`);
       process.exit(1);
       break;
 
@@ -76,10 +81,10 @@ var onError = function onError(error) {
  */
 
 
-var onListening = function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string' ? "pipe ".concat(addr) : "port ".concat(addr.port);
-  (0, _debug["default"])("Listening on ".concat(bind));
+const onListening = () => {
+  const addr = server.address();
+  const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
+  debug(`Listening on ${bind}`);
 };
 /**
  * Listen on provided port, on all network interfaces.

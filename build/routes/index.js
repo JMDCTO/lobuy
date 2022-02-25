@@ -1,22 +1,30 @@
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _express = _interopRequireDefault(require("express"));
-
-var _controllers = require("../controllers");
-
-var indexRouter = _express["default"].Router();
-
-indexRouter.get('/', _controllers.indexPage);
-indexRouter.get('/:email', _controllers.userPage);
-indexRouter.post('/users', _controllers.userPage);
-indexRouter.post('/users/reg', _controllers.userRegPage);
-indexRouter.post('/users/sessions', _controllers.loginCachePage);
-var _default = indexRouter;
-exports["default"] = _default;
+import express from 'express';
+import { indexPage, userPage, userRegPage } from '../controllers';
+import { loginCachePage } from '../controllers';
+import { employeePage } from '../controllers';
+import { logoPage } from '../controllers';
+import { nodummieUserPage } from '../controllers';
+import { nodummieLoginPage } from '../controllers';
+import { nodummieLogoPage } from '../controllers';
+import { nodummieLocationPage } from '../controllers';
+import { nodummieBusinessPage } from '../controllers';
+import { locationPage } from '../controllers';
+import { billingAddressPage } from '../controllers';
+import { nodummieImpressumPage } from '../controllers';
+const indexRouter = express.Router();
+indexRouter.get('/', indexPage);
+indexRouter.get('/:email', userPage);
+indexRouter.post('/users', userPage);
+indexRouter.post('/users/reg', userRegPage);
+indexRouter.post('/users/sessions', loginCachePage);
+indexRouter.post('/users/location', locationPage);
+indexRouter.post('/users/billingaddress', billingAddressPage);
+indexRouter.post('/intern/users', employeePage);
+indexRouter.post('/intern/search/user', nodummieUserPage);
+indexRouter.post('/intern/business/logo', nodummieLogoPage);
+indexRouter.post('/intern/search/userlogindata', nodummieLoginPage);
+indexRouter.post('/intern/search/userlocation', nodummieLocationPage);
+indexRouter.post('/business', nodummieBusinessPage);
+indexRouter.post('/business/logos', logoPage);
+indexRouter.post('/business/impressum', nodummieImpressumPage);
+export default indexRouter;
