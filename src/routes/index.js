@@ -12,6 +12,9 @@ import { nodummieBusinessPage } from '../controllers';
 import { locationPage } from '../controllers';
 import { billingAddressPage } from '../controllers';
 import { nodummieImpressumPage } from '../controllers';
+import { categoryPage } from '../controllers';
+import { tagPage } from '../controllers';
+
 
 const indexRouter = express.Router();
 
@@ -30,5 +33,8 @@ indexRouter.post('/intern/search/userlocation', nodummieLocationPage);
 indexRouter.post('/business', nodummieBusinessPage);
 indexRouter.post('/business/logos', logoPage);
 indexRouter.post('/business/impressum', nodummieImpressumPage);
+indexRouter.post('/products/categories', categoryPage);
+indexRouter.post('/products/categories/tags', tagPage);
+
 
 export default indexRouter;

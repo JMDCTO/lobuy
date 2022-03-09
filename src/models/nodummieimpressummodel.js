@@ -16,7 +16,7 @@ class NoDummieImpressumModel {
   async getBusinessImpressum(officialbusiness) {
     var format = require('pg-format');
     var poolquery = pool.getPool();
-    var sql = format('SELECT * FROM businesses.business_impressum WHERE business_name = %L', [officialbusiness]);
+    var sql = format('SELECT official_contact, email FROM businesses.business_impressum WHERE business_name = %L', [officialbusiness]);
     var result = poolquery.query(sql);
     return result;
   }

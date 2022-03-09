@@ -12,3 +12,5 @@ export * from './billingaddress';
 export * from './nodummielogo';
 export * from './businesslogo';
 export * from './nodummieimpressum';
+export * from './category';
+export * from './tag';

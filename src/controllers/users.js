@@ -78,7 +78,6 @@ export const userRegPage = async (req, res) => {
     var finalDay = dayInt.toString();
 
     var date = new Date(year + "-" + month + "-" + finalDay);
-
     //insert
     const data = await userModel.insertUser(email, password, alias, date, premium);
     //get id
@@ -86,18 +85,23 @@ export const userRegPage = async (req, res) => {
     const userId = parseInt(userFeedback.rows[0]['id']);
     //insert login infos
     const firstLogin = await loginModel.insertLoginInfo(userId, email, "true", date);
-
     var currentDate = new Date();
 
     console.log("user was registered at : " + currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds());
 
-    if(data) {
+    if(data.rowCount) {
       var response = [{
-          finished_reg: 'true'
+          finished_reg: 'true',
+          id: userId,
+          email: email,
+          alias: alias
       }];
     res.status(200).json({ feedback: response });
   } else {
-
+    var response = [{
+        finished_reg: 'false'
+    }];
+  res.status(200).json({ feedback: response });
   }
   } catch (err) {
     res.status(200).json({ messages: err.stack });
